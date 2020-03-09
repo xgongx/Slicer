@@ -50,7 +50,7 @@ public:
 // ----------------------------------------------------------------------
 // Construct without computing moments
 template <class TImage>
-ImageRegionMomentsCalculator<TImage>::ImageRegionMomentsCalculator(void)
+ImageRegionMomentsCalculator<TImage>::ImageRegionMomentsCalculator()
 {
   m_Valid = false;
   m_Image = nullptr;
@@ -200,7 +200,7 @@ ImageRegionMomentsCalculator<TImage>::Compute()
     }
 
   // Compute principal moments and axes
-  vnl_symmetric_eigensystem<double> eigen( m_Cm.GetVnlMatrix() );
+  vnl_symmetric_eigensystem<double> eigen( m_Cm.GetVnlMatrix().as_ref() );
   vnl_diag_matrix<double>           pm = eigen.D;
   for( unsigned int i = 0; i < ImageDimension; i++ )
     {
@@ -210,7 +210,7 @@ ImageRegionMomentsCalculator<TImage>::Compute()
 
   // Add a final reflection if needed for a proper rotation,
   // by multiplying the last row by the determinant
-  vnl_real_eigensystem                  eigenrot( m_Pa.GetVnlMatrix() );
+  vnl_real_eigensystem                  eigenrot( m_Pa.GetVnlMatrix().as_ref() );
   vnl_diag_matrix<std::complex<double> > eigenval = eigenrot.D;
   std::complex<double>                   det( 1.0, 0.0 );
   for( unsigned int i = 0; i < ImageDimension; i++ )
@@ -323,7 +323,7 @@ ImageRegionMomentsCalculator<TImage>::GetPrincipalAxes() const
 // Get principal axes to physical axes transform
 template <class TImage>
 typename ImageRegionMomentsCalculator<TImage>::AffineTransformPointer
-ImageRegionMomentsCalculator<TImage>::GetPrincipalAxesToPhysicalAxesTransform(void) const
+ImageRegionMomentsCalculator<TImage>::GetPrincipalAxesToPhysicalAxesTransform() const
 {
   typename AffineTransformType::MatrixType matrix;
   typename AffineTransformType::OffsetType offset;
@@ -349,7 +349,7 @@ ImageRegionMomentsCalculator<TImage>::GetPrincipalAxesToPhysicalAxesTransform(vo
 
 template <class TImage>
 typename ImageRegionMomentsCalculator<TImage>::AffineTransformPointer
-ImageRegionMomentsCalculator<TImage>::GetPhysicalAxesToPrincipalAxesTransform(void) const
+ImageRegionMomentsCalculator<TImage>::GetPhysicalAxesToPrincipalAxesTransform() const
 {
   typename AffineTransformType::MatrixType matrix;
   typename AffineTransformType::OffsetType offset;

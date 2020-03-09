@@ -1013,6 +1013,7 @@ class ScreenCaptureLogic(ScriptedLoadableModuleLogic):
     imageHeightOdd = (imageSize[1] & 1 == 1)
     if imageWidthOdd or imageHeightOdd:
       imageClipper = vtk.vtkImageClip()
+      imageClipper.SetClipData(True)
       imageClipper.SetInputData(capturedImage)
       extent = capturedImage.GetExtent()
       imageClipper.SetOutputWholeExtent(extent[0], extent[1]-1 if imageWidthOdd else extent[1],
@@ -1268,6 +1269,7 @@ class ScreenCaptureLogic(ScriptedLoadableModuleLogic):
     filePathPattern = os.path.join(outputDir, imageFileNamePattern)
     outputVideoFilePath = os.path.join(outputDir, videoFileName)
     ffmpegParams = [ffmpegPath,
+                    "-nostdin",  # disable stdin (to prevent hang when running Slicer as background process)
                     "-y", # overwrite without asking
                     "-r", str(frameRate),
                     "-start_number", "0",

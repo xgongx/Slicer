@@ -141,7 +141,7 @@ bool vtkImageGrowCutSegment::vtkInternal::InitializationAHP(
     seedLabelVolumePtr = static_cast<LabelPixelType*>(seedLabelVolume->GetScalarPointer());
     }
   MaskPixelType* maskLabelVolumePtr = nullptr;
-  if (seedLabelVolume != nullptr)
+  if (maskLabelVolume != nullptr)
     {
     maskLabelVolumePtr = static_cast<MaskPixelType*>(maskLabelVolume->GetScalarPointer());
     }
@@ -191,7 +191,7 @@ bool vtkImageGrowCutSegment::vtkInternal::InitializationAHP(
     // The neighborhood size is everywhere the same (size of m_NeighborIndexOffsets)
     // except at the edges of the volume, where the neighborhood size is 0.
     m_NumberOfNeighbors.resize(dimXYZ);
-    const unsigned char numberOfNeighbors = m_NeighborIndexOffsets.size();
+    const unsigned char numberOfNeighbors = static_cast<unsigned char>(m_NeighborIndexOffsets.size());
     unsigned char* nbSizePtr = &(m_NumberOfNeighbors[0]);
     for (NodeIndexType z = 0; z < m_DimZ; z++)
       {
@@ -549,6 +549,17 @@ vtkImageGrowCutSegment::vtkImageGrowCutSegment()
 vtkImageGrowCutSegment::~vtkImageGrowCutSegment()
 {
   delete this->Internal;
+}
+
+//-----------------------------------------------------------------------------
+int vtkImageGrowCutSegment::FillInputPortInformation(int port, vtkInformation * info)
+{
+  vtkImageAlgorithm::FillInputPortInformation(port, info);
+  if (port == 2)
+    {
+    info->Set(vtkAlgorithm::INPUT_IS_OPTIONAL(), 1);
+    }
+  return 1;
 }
 
 //-----------------------------------------------------------------------------

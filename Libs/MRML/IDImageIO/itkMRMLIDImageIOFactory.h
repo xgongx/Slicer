@@ -1,19 +1,20 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkMRMLIDImageIOFactory.h,v $
-  Language:  C++
-  Date:      $Date: 2004/07/15 16:26:40 $
-  Version:   $Revision: 1.1 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
+ *
+ *  Copyright NumFOCUS
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 #ifndef itkMRMLIDImageIOFactory_h
 #define itkMRMLIDImageIOFactory_h
 
@@ -39,8 +40,8 @@ public:
   typedef SmartPointer<const Self>  ConstPointer;
 
   /** Class methods used to interface with the registered factories. */
-  const char* GetITKSourceVersion(void) const override;
-  const char* GetDescription(void) const override;
+  const char* GetITKSourceVersion() const override;
+  const char* GetDescription() const override;
 
   /** Method for class instantiation. */
   itkFactorylessNewMacro(Self);
@@ -50,7 +51,7 @@ public:
   itkTypeMacro(MRMLIDImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void RegisterOneFactory()
   {
     MRMLIDImageIOFactory::Pointer nrrdFactory = MRMLIDImageIOFactory::New();
     ObjectFactoryBase::RegisterFactory(nrrdFactory);
